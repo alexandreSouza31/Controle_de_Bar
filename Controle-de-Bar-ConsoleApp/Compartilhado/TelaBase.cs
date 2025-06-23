@@ -1,11 +1,11 @@
 namespace ControleDeBar.ConsoleApp.Compartilhado;
 
-public abstract class TelaBase
+public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 {
     protected string nomeEntidade;
-    protected RepositorioBase repositorio;
+    protected RepositorioBase<Tipo> repositorio;
 
-    protected TelaBase(string nomeEntidade, RepositorioBase repositorio)
+    protected TelaBase(string nomeEntidade, RepositorioBase<Tipo> repositorio)
     {
         this.nomeEntidade = nomeEntidade;
         this.repositorio = repositorio;
@@ -24,7 +24,7 @@ public abstract class TelaBase
         Console.WriteLine();
 
         Console.Write("Digite uma opção válida: ");
-        char opcaoEscolhida = Console.ReadLine().ToUpper()[0];
+        char opcaoEscolhida = Console.ReadLine()!.ToUpper()[0];
 
         return opcaoEscolhida;
     }
@@ -37,7 +37,7 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase novoRegistro = ObterDados();
+        Tipo novoRegistro = ObterDados();
 
         string erros = novoRegistro.Validar();
 
@@ -83,7 +83,7 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase registroAtualizado = ObterDados();
+        Tipo registroAtualizado = ObterDados();
 
         string erros = registroAtualizado.Validar();
 
@@ -104,7 +104,7 @@ public abstract class TelaBase
         ApresentarMensagem($"{nomeEntidade} editado/a com sucesso!", ConsoleColor.Green);
     }
 
-    public void ExcluirRegistro()
+    public virtual void ExcluirRegistro()
     {
         ExibirCabecalho();
 
@@ -157,5 +157,5 @@ public abstract class TelaBase
         Console.ReadLine();
     }
 
-    protected abstract EntidadeBase ObterDados();
+    protected abstract Tipo ObterDados();
 }
